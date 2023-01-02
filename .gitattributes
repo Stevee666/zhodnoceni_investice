@@ -1,2 +1,87 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+<?php
+session_start();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>
+</title>
+</head>
+<body>
+<?php
+if(isset($_SESSION["logoff"]))
+{
+$_SESSION = array();
+	echo("Jste prihlasen jako ".$_SESSION["login"]);
+    echo("<br><a href='formular.php?logoff'>Odhlasit</a>");
+}
+elseif(ISSET($_GET["login"]))
+{
+	if($_GET["login"]=="admin")
+		if($_GET["password"]=="123456")
+		{
+			$_SESSION["login"]=$_GET["login"];
+			echo("Jste prihlaseni jako ".$_SESSION["login"]);
+             echo("<br><a href='formular.php?logoff'>Odhlasit</a>"); 
+			
+		}
+        else
+         {
+		  echo("Spatne heslo");
+           include("formular.php");
+		 }
+	else
+		{
+		echo ("Spatny login");
+         include("formular.php");
+		}
+ } else { 
+ include("formular.php");
+ }  
+ 
+ 
+ if(file_exists("Data.txt"))
+{
+echo("soubor existuje<br>");
+}else
+{
+echo("soubor neexistuje<br>");
+}
+$soubor = fopen("Data.txt","r");
+$znak="";
+$pocet = 0;
+
+while($pocet < filesize("Data.txt"))
+    $login = "";
+    $pokracovat = true; 
+    while($pokracovat)
+
+{
+    $znak = fread($soubor,1);
+     $pocet++;
+    if($znak == ";")    
+    {
+    $pokracovat = false;
+    }else{
+        $login .= $znak;}
+}
+echo($login. "<br>");
+}
+
+fclose($soubor);
+
+$soubor = fopen("Data.txt","a");
+fwrite($soubor,"neco");
+fwrite($soubor,";");
+fwrite($soubor,"neco2");
+fwrite($soubor,";");
+fclose($soubor);
+
+
+        
+
+
+
+?>
+</body>
+</html>
